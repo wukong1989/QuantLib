@@ -32,7 +32,7 @@
 
 namespace QuantLib {
 
-    /*! \deprecated Use the new framework instead.
+    /*! \deprecated Use the new finite-differences framework instead.
                     Deprecated in version 1.22.
     */
     template <typename baseEngine>
@@ -45,9 +45,34 @@ namespace QuantLib {
         : baseEngine(process, timeSteps, gridPoints, timeDependent) {}
       protected:
         void initializeStepCondition() const {
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+#if defined(QL_PATCH_MSVC)
+#pragma warning(push)
+#pragma warning(disable:4996)
+#endif
+
             baseEngine::stepCondition_ =
                 ext::shared_ptr<StandardStepCondition>(
                   new AmericanCondition(baseEngine::intrinsicValues_.values()));
+
+#if defined(QL_PATCH_MSVC)
+#pragma warning(pop)
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
         }
     };
 
