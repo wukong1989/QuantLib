@@ -32,8 +32,11 @@
 
 namespace QuantLib {
 
+    /*! \deprecated Use the new framework instead.
+                    Deprecated in version 1.22.
+    */
     template <typename baseEngine>
-    class FDAmericanCondition : public baseEngine {
+    class QL_DEPRECATED FDAmericanCondition : public baseEngine {
       public:
         FDAmericanCondition(
              const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
